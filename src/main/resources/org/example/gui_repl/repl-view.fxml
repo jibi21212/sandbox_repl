@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<BorderPane fx:controller="org.example.gui_repl.ReplController"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@styles.css" />
+    </stylesheets>
+
+    <top>
+        <VBox spacing="5" styleClass="top-container">
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="category-buttons-bar">
+                <Button text="New REPL" onAction="#createNewReplTab" styleClass="category-button"/>
+                <Button text="Processes" onAction="#toggleProcessesList" styleClass="category-button"/>
+                <Button text="Threads" onAction="#toggleThreadsList" styleClass="category-button"/>
+                <Button text="Sockets" onAction="#toggleSocketsList" styleClass="category-button"/>
+                <Button text="UI" onAction="#toggleUIList" styleClass="category-button"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="replTabPane" tabClosingPolicy="ALL_TABS"/>
+    </center>
+
+    <right>
+        <VBox fx:id="detailsSidebar" prefWidth="250" styleClass="details-sidebar">
+            <Label text="Details Panel" style="-fx-font-size: 14px; -fx-text-fill: #cccccc; -fx-padding: 5;"/>
+            <StackPane fx:id="sidebarContentPane" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </right>
+</BorderPane>
