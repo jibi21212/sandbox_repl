@@ -1,10 +1,8 @@
-package org.example.gui_repl;// Main.java (or ReplApplication.java)
+package org.example.gui_repl.ui;// Main.java (or ReplApplication.java)
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
-import org.example.gui_repl.ReplController;
 
 public class ReplApplication extends Application {
 

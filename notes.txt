@@ -1,0 +1,25 @@
+Gradle commands:
+
+.\gradlew
+-> build : compile source code into a distributable format (like .jar file)
+-> run   : execute application from grade project, will build if necessary,
+-> clean : removes the build, allowing you to rebuild if you wish (good for if there are strange errors)
+-> test  : runs all tests
+
+Project State:
+I am currently setting this up to be a polyglot project using Java, Kotlin, Clojure
+I may add more later idk
+Right now it seems I set it up correctly to connect everything across the different gradle builds and different environments
+
+Immediate next step:
+It seems I may have syntax errors or incorrect kotlin environment. I should fix this, try to run the project and see if the UI is working as it did before.
+Once I confirm that the UI is working, I can move onto actual functionality.
+
+Far next steps:
+Allow connection to run times, handle errors gracefully, add a REPL/Compile button
+Allow for REPL/Compile button to switch between running code line by line or executing the whole file. Find better name then compile
+Try to set up HTTPS history and websocket monitoring feature.
+Figure out how a UI display would work, I'll likely need a mini browser launch to allow for this and HTTP history feature
+Maybe add a feature to view the database and stuff about it? Like history of interaction with DB? Similar to the monitoring services for all the other things but for DB as well
+
+Plan out some more. This will be cool, and allow for a nice dev experience in which one can see all the components and how they are interactively.

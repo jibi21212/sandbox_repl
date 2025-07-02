@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane fx:controller="org.example.gui_repl.ReplProcessController" dividerPositions="0.8" orientation="VERTICAL" styleClass="repl-tab-splitpane" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane fx:controller="org.example.gui_repl.ui.ReplProcessController" dividerPositions="0.8" orientation="VERTICAL" styleClass="repl-tab-splitpane" xmlns:fx="http://javafx.com/fxml/1">
 <items>
     <TextArea fx:id="outputArea" editable="false" styleClass="repl-output-area"/>
     <TextField fx:id="inputField" onAction="#handleInput" styleClass="repl-input-field"/>

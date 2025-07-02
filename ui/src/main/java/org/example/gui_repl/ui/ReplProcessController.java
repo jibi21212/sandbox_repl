@@ -1,5 +1,5 @@
 // ReplProcessController.java
-package org.example.gui_repl;
+package org.example.gui_repl.ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -145,24 +145,15 @@ public class ReplProcessController {
         outputArea.appendText(line + ": >> " + input + "\n");
         line++;
         executorService.submit(() -> {
-            processInputWriter.println(input);
-            processInputWriter.flush();
-            readyForInput = false;
-            // You might need a more sophisticated prompt detection or
-            // timeout if the REPL doesn't always provide a prompt.
+            try {
+                Thread.sleep(100); // Simulate processing
+                Platform.runLater(() -> {
+                    outputArea.appendText(input + "\n");
+                });
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
-
-        // --- Custom Command Interception (e.g., "fork()") ---
-        // This is a simple example. For a real REPL, you'd parse the input more carefully.
-        if (input.trim().equals("fork()")) {
-            Platform.runLater(() -> {
-                // How to call the main controller to create a new tab?
-                // This ReplProcessController doesn't know about the TabPane.
-                // It needs a callback or a reference to the main controller.
-                // We'll address this in the main ReplController.
-                outputArea.appendText("Attempting to fork new REPL process...\n");
-            });
-        }
     }
 
     public void shutdown() {

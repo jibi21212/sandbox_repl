@@ -1,5 +1,5 @@
 // ReplController.java
-package org.example.gui_repl;
+package org.example.gui_repl.ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
