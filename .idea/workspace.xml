@@ -5,35 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f96e547-46b4-40a5-aee8-cd8c4c82ad19" name="Changes" comment="Initial Commit, I have a prototype UI so far">
-      <change afterPath="$PROJECT_DIR$/backend/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/org.example.gui_repl.common/Session.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/coordination/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/coordination/src/main/kotlin/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/coordination/src/main/kotlin/org.example.gui_repl.coordination/EchoReplService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notes.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui_repl/ReplApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui_repl/ReplController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui_repl/ReplProcessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplProcessController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/gui_repl/repl-tab-content.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/repl-tab-content.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/gui_repl/repl-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/repl-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/example/gui_repl/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
