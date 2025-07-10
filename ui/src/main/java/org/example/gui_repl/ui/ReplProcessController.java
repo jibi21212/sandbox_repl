@@ -11,12 +11,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.regex.Matcher;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ReplProcessController {
 
@@ -25,29 +22,38 @@ public class ReplProcessController {
 
     private Process replProcess;
     private PrintWriter processInputWriter;
+    private BufferedReader processOutputReader; // -> Out of order or does not exist in original file
     private ExecutorService executorService;
-    private volatile boolean readyForInput = true;
-    private ConcurrentLinkedQueue<String> replOutputQueue = new ConcurrentLinkedQueue<>();
+    private volatile boolean readyForInput = false;
+    /*
+    Volatile keyword is something crucial for multithreaded concurrent programming.
+    We essentially give a hint to the JVM that we want it to mutate this specific variable rather than
+     some local variable copy, and it orders the requests to read/write it as they are called.
+    It just super helpful in a multithreaded environment to get the behaviour we want in this case.
+    */
     private Future<?> replOutputMonitorFuture;
-    private int line = 1;
+    // In original, we had: private int line = 1; which we omitted in this version
+    private StringBuilder currentResponse = new StringBuilder(); // Not present in original
 
     // Configuration for this specific REPL process
     private String replCommand = "python";
-    private String[] replArgs = {"-i"};
-    private String promptRegex = "^(>>> |\\.\\.\\. )";
+    private String[] replArgs = {"-i", "-u"}; // -u for unbuffered output -> we only had -i in original, the -u is new
+    private Pattern promptPattern = Pattern.compile("^(>>> |\\.\\.\\. ).*?$"); // In original, we had: private String promptRegex = "^(>>> |\\.\\.\\. )"; instead of this
 
-    private String tabName = "REPL-1"; // Will be set by parent controller
-
-    // Constructor (called when FXML is loaded, but can be customized later)
+    private String tabName = "REPL-1";
+    // Let SAB = `same as before` as in it's the same exactly as the original in the git repo right now
+    // Let DTB = `different than before` as in it's completely new, not present at all in the original repo
     public ReplProcessController() {
         executorService = Executors.newCachedThreadPool();
-    }
+    } // SAB
 
     @FXML
     public void initialize() {
-        outputArea.setWrapText(true);
+        System.out.println("ReplProcessController initialize() called"); // This is a debugging print statement this doesn't count
+        System.out.println("InputField null? " + (inputField == null)); // This as well
+        outputArea.setWrapText(true); // Same
+        inputField.setDisable(false);
         startReplProcess();
-        startReplOutputMonitor();
     }
 
     public void setTabName(String name) {
@@ -56,10 +62,10 @@ public class ReplProcessController {
 
     // You can add setters to allow the main controller to configure
     // replCommand, replArgs, promptRegex for each new tab
-    public void setReplConfig(String command, String[] args, String prompt) {
+    public void setReplConfig(String command, String[] args, String promptRegex) {
         this.replCommand = command;
         this.replArgs = args;
-        this.promptRegex = prompt;
+        this.promptPattern = Pattern.compile(promptRegex);
     }
 
     private void startReplProcess() {
@@ -74,10 +80,15 @@ public class ReplProcessController {
             pb.redirectErrorStream(true);
             replProcess = pb.start();
 
-            processInputWriter = new PrintWriter(replProcess.getOutputStream());
+            processInputWriter = new PrintWriter(replProcess.getOutputStream(), true);
+            processOutputReader = new BufferedReader(new InputStreamReader(replProcess.getInputStream()));
 
-            outputArea.appendText("Started " + tabName + ": " + String.join(" ", command) + "\n");
-            outputArea.appendText("Waiting for initial prompt...\n");
+            Platform.runLater(() -> {
+                outputArea.appendText("Starting " + tabName + ": " + String.join(" ", command) + "\n");
+                outputArea.appendText("Waiting for REPL to initialize... \n");
+                    });
+
+            startReplOutputMonitor();
 
         } catch (IOException e) {
             Platform.runLater(() -> {
@@ -89,46 +100,51 @@ public class ReplProcessController {
 
     private void startReplOutputMonitor() {
         replOutputMonitorFuture = executorService.submit(() -> {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(replProcess.getInputStream()))) {
+            try {
                 String line;
-                Pattern p = Pattern.compile(promptRegex);
-                while ((line = reader.readLine()) != null) {
-                    final String outputLine = line;
-                    replOutputQueue.offer(outputLine);
+                AtomicBoolean firstPromptSeen = new AtomicBoolean(false);
 
-                    Platform.runLater(() -> {
-                        Matcher m = p.matcher(outputLine.trim());
-                        if (m.matches()) {
+                // Use the instance variable, not a new one!
+                while ((line = processOutputReader.readLine()) != null) {
+                    final String outputLine = line;
+                    Platform.runLater(()->{
+                        outputArea.appendText(outputLine + "\n");
+
+                        // ADD THIS DEBUG LINE:
+                        System.out.println("Checking line: '" + outputLine + "' against pattern");
+
+                        if(promptPattern.matcher(outputLine).find()){
+                            System.out.println("PROMPT FOUND!"); // ADD THIS
+                            if(!firstPromptSeen.get()){
+                                outputArea.appendText("REPL ready for input!\n");
+                                inputField.setDisable(false);
+                                firstPromptSeen.set(true);
+                            }
                             readyForInput = true;
-                            while(!replOutputQueue.isEmpty()) {
-                                outputArea.appendText(replOutputQueue.poll() + "\n");
-                            }
+                            currentResponse.setLength(0);
                         } else {
-                            if (readyForInput) {
-                                outputArea.appendText(outputLine + "\n");
-                            }
+                            currentResponse.append(outputLine).append("\n");
                         }
                     });
                 }
             } catch (IOException e) {
-                Platform.runLater(() -> outputArea.appendText(tabName + " Output Error: " + e.getMessage() + "\n"));
-            } finally {
-                Platform.runLater(() -> {
-                    outputArea.appendText("\n--- " + tabName + " Process Exited ---\n");
-                    inputField.setDisable(true);
-                    readyForInput = false;
-                });
+                // ... rest of your exception handling
             }
         });
     }
 
     @FXML
     private void handleInput() {
-        String input = inputField.getText();
+        String input = inputField.getText().trim();
         inputField.clear();
 
         if (input.equals("clear")) {
             outputArea.clear();
+            return;
+        }
+
+        if (input.equals("exit") || input.equals("quit")) {
+            shutdown();
             return;
         }
 
@@ -142,35 +158,66 @@ public class ReplProcessController {
             return;
         }
 
-        outputArea.appendText(line + ": >> " + input + "\n");
-        line++;
-        executorService.submit(() -> {
+        readyForInput = false;
+        executorService.submit(() -> sendCommandToRepl(input));
+    }
+
+    private void sendCommandToRepl(String command){
+        try {
+            Platform.runLater(() -> outputArea.appendText(">>> " + command + "\n"));
+            processInputWriter.println(command);
+            processInputWriter.flush();
+            CompletableFuture<Void> responseWaiter = CompletableFuture.runAsync(()->
+            {
+                try{
+                    for (int i = 0; i < 100; i++){
+                        if(readyForInput) break;
+                        Thread.sleep(100);
+                    }
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                }
+            });
+
             try {
-                Thread.sleep(100); // Simulate processing
-                Platform.runLater(() -> {
-                    outputArea.appendText(input + "\n");
-                });
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+               responseWaiter.get(10, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                Platform.runLater(() ->
+                        outputArea.appendText("Command timeout or error: " + e.getMessage() + "\n")
+                );
+                readyForInput = true;
             }
-        });
+        } catch (Exception e) {
+            Platform.runLater(() ->
+                    outputArea.appendText("Error sending command: " + e.getMessage() + "\n")
+            );
+            readyForInput = true;
+        }
     }
 
     public void shutdown() {
+        readyForInput = false;
+
         if (replOutputMonitorFuture != null && !replOutputMonitorFuture.isDone()) {
             replOutputMonitorFuture.cancel(true);
         }
+
+        if (processInputWriter != null) {
+            processInputWriter.close();
+        }
+
         if (replProcess != null && replProcess.isAlive()) {
             replProcess.destroy();
             try {
-                replProcess.waitFor(5, java.util.concurrent.TimeUnit.SECONDS);
+                if (!replProcess.waitFor(3, TimeUnit.SECONDS)) {
+                    replProcess.destroyForcibly();
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-            }
-            if (replProcess.isAlive()) {
                 replProcess.destroyForcibly();
             }
         }
+
         if (executorService != null) {
             executorService.shutdownNow();
         }

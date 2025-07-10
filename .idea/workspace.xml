@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f96e547-46b4-40a5-aee8-cd8c4c82ad19" name="Changes" comment="Initial Commit, I have a prototype UI so far">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplProcessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplProcessController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/repl-tab-content.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/repl-tab-content.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
