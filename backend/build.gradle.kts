@@ -1,6 +1,7 @@
 plugins {
     java
     id("dev.clojurephant.clojure")
+
 }
 
 repositories {

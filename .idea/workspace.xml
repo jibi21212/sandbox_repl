@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f96e547-46b4-40a5-aee8-cd8c4c82ad19" name="Changes" comment="Initial Commit, I have a prototype UI so far">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/clojure/org/example/gui_repl/backend/core.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/clojure/org/example/gui_repl/backend/system.clj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/clojure/org/example/gui_repl/backend/utils.clj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplProcessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/java/org/example/gui_repl/ui/ReplProcessController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/repl-tab-content.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/src/main/resources/org/example/gui_repl/ui/repl-tab-content.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/clojure/org.example.gui_repl.backend/process_manager.clj" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +78,8 @@
         <option value="Class" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Class" />
+        <option value="CLJC Namespace" />
+        <option value="Clojure Namespace" />
       </list>
     </option>
   </component>
@@ -141,6 +145,7 @@
     &quot;Gradle.GUI_REPL [build].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;cursive.last.file.extension.C\\:/Users/jibkh/Personal_Projects/desktop_app/GUI_REPL/backend/src/main/clojure&quot;: &quot;clj&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -153,6 +158,7 @@
       <recent name="C:\Users\jibkh\Personal_Projects\desktop_app\GUI_REPL\coordination\src\main\kotlin" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jibkh\Personal_Projects\desktop_app\GUI_REPL\backend\src\main\clojure" />
       <recent name="C:\Users\jibkh\Personal_Projects\desktop_app\GUI_REPL" />
       <recent name="C:\Users\jibkh\Personal_Projects\desktop_app\GUI_REPL\ui" />
       <recent name="C:\Users\jibkh\Personal_Projects\desktop_app\GUI_REPL\src\main\resources\org\example\gui_repl" />
