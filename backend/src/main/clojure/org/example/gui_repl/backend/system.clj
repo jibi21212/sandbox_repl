@@ -84,14 +84,40 @@
           (check-name os-name "windows") (keyword "windows")
           (check-name os-name "mac") (keyword "mac")
           (check-name os-name "linux") (keyword "linux")
-          :else (keyword "unknown")
-        )))
+          :else (keyword "unknown"))))
 
 ; Resource Calculation
 
+(defn calculate-max-sessions
+  "Helper function to help calculate max sessions based on CPU cores"
+  [cores]
+  (* 2 cores))
+
+(defn calculate-memory-per-session
+  "Helper function to help calculate memory per session"
+  [total-memory max-sessions conservative-factor]
+  (if (> max-sessions 0)
+    (/ (* total-memory conservative-factor) max-sessions)
+    0))
+
+(defn calculate-cpu-priority-per-session
+  "Helper function to help calculate CPU priority allocation per session"
+  [max-sessions]
+  (if (> max-sessions 0)
+   (/ 1 max-sessions)
+   0))
+; By default, it will assign equally, but the idea is, in process_manager once we start using sessions, we will use a scheduling algorithm to allocated tasks as needed
+
 (defn calculate-default-session-limits
-  ""
-  [])
+  "Calculate recommended limits for REPL sessions based on detected resources"
+  ([system-info] (calculate-default-session-limits system-info 0.25))
+  ([system-info conservative-factor]                                             ; a deep merged map of the detection functions above
+  (let [total-memory (get system-info :max-memory)
+        cpu-cores (get system-info :available-processors)
+        max-sessions (calculate-max-sessions cpu-cores)]
+   {:max-sessions max-sessions
+    :memory-per-session (calculate-memory-per-session total-memory max-sessions conservative-factor)
+    :cpu-per-session (calculate-cpu-priority-per-session max-sessions)})))
 
 (defn calculate-adaptive-limits
   ""

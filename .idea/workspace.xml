@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f96e547-46b4-40a5-aee8-cd8c4c82ad19" name="Changes" comment="Initial Commit, I have a prototype UI so far">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/clojure/org/example/gui_repl/backend/system.clj" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/clojure/org/example/gui_repl/backend/system.clj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
