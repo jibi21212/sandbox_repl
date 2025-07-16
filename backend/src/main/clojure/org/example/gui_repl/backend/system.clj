@@ -178,22 +178,64 @@
   [language session-type]
   :???) ; Should optimize for a language, this is more complex leave this for later
 
-(defn check-resource-health
-  "Monitor current resource usage and warn of issues"       ; Returns map with status, warnings, recommendations
-  ; Uses all detection functions
-  ; Use utils/log-info, utils/log-error, utils/log-debug as needed
-  ; I assume this function orchestrates all the other detection functions and monitors
-  ; Maybe there should be an agent here running in the background?
-  ; Maybe this is where I deep-merge the maps that result from detection functions?
-  ; I can have a helper function for this purpose
+(defn gather-all-system-data
+  "Helper function to gather system data using detection functions"
   []
-  )
+  (utils/deep-merge
+    {(get-runtime-info)
+    (get-system-memory-info)
+    (get-disk-space-info)
+    (:os-type (detect-os-type))}))
+
+(defn analyze-warnings
+  "Helper function to analyze and provide warnings based on current system load"
+  [system-data]
+  (let [warnings []]
+   (cond-> warnings
+          (> (:memory-usage system-data) 0.8) (conj "High memory usage detected")
+          (> (:cpu-usage system-data) 0.8) (conj "High CPU usage detected")
+          (< (:free-space system-data) 500000000) (conj "Low disk space detected")
+           )))
+
+(defn generate-recommendations
+  "Helper function to generate and provide recommendations based on current system load"
+  [system-data]
+  (cond
+    (> memory-usage 0.9) ["Free up memory", "Consider closing applications"]
+    (> cpu-usage 0.85) ["Reduce CPU load", "Close unnecessary programs"]
+    (< free-disk=space 1000000000) ["Free up disk space"]
+    :else ["System Healthy"]))
+
+(defn determine-status
+  "Helper function to determine and provide status based on current system load"
+  [system-data warnings]
+  (cond
+    (or (> (:cpu-usage system-data) 0.95)
+        (> (:memory-usage system-data) 0.95) :critical)
+    (or (> (:cpu-usage system-data) 0.8)
+        (> (:memory-usage system-data) 0.8) :warning)
+    (seq warnings) :warning)
+    :else :healthy)
+
+(defn check-resource-health
+  "Monitor current resource usage and warn of issues"       ; Returns map with status, warnings, recommendations, system-data
+  []
+  (let [system-data (gather-all-system-data)
+        warnings (let [w (analyze-warnings system-data)]
+                   (if (string/blank? w)
+                     "No warnings detected"
+                     w))]
+    ({:status (determine-status system-data warnings)
+      :warnings warnings
+      :recommendations (generate-recommendations system-data)
+      :system-data system-data})
+    ))                                                      ; I THINK it should work? Maybe set up the logging via the AGENT that will run this function occasionally?
 
 ; Config and Persistence
 
 (defn load-system-overrides
-  ""
-  [])
+  "Load user config resource limits from config files"      ; Returns a map with user overrides (or empty map if there is an error)
+  [])                                                       ; Use utils/file-exists?
 
 (defn save-detected-limits
   ""
@@ -206,7 +248,7 @@
 ; Main API
 ; Use 'wrap-try-catch' function for these functions below
 ; This is where core.clj will call the above functions when communicating with Kotlin layer
-; It's useful to have structured responses for Kotlin apperantly
+; It's useful to have structured responses for Kotlin apparently
 
 (defn initialize-system-limits!
   ""
@@ -220,5 +262,3 @@
   ""
   [])
 
-; TODO: Add logging into all functions after I complete all of them for testing purposes
-; I can opt to overload the function by giving a boolean which will make it log?
